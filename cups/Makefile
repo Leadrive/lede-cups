@@ -9,12 +9,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cups
-PKG_VERSION:=2.1.4
+# PKG_VERSION:=2.1.4
+PKG_VERSION:=2.2.8
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.gz
-PKG_SOURCE_URL:=http://www.cups.org/software/$(PKG_VERSION)
-PKG_MD5SUM:=9f9bf6e3b9c20a3519b4dc409666d6e7
+PKG_SOURCE_URL:=https://github.com/apple/cups/releases/download/v$(PKG_VERSION)/
+PKG_MD5SUM:=skip
 
 TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
@@ -277,27 +278,27 @@ endef
 
 define Package/libcups/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcups.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/cups/libcups.so* $(1)/usr/lib/
 endef
 
 define Package/libcupscgi/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupscgi.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/cgi-bin/libcupscgi.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsimage/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsimage.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/filter/libcupsimage.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsmime/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsmime.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/scheduler/libcupsmime.so* $(1)/usr/lib/
 endef
 
 define Package/libcupsppdc/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcupsppdc.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/ppdc/libcupsppdc.so* $(1)/usr/lib/
 endef
 
 define Build/InstallDev
@@ -306,7 +307,7 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
 	$(CP) $(PKG_INSTALL_DIR)/usr/include/cups $(1)/usr/include/
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcups*.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/cups/libcups*.so* $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,cups))
